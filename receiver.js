@@ -1,31 +1,63 @@
 const statusText = document.getElementById("status");
 const startBtn = document.getElementById("startScanBtn");
 
+let qrScanner = null;
+const receivedChunks = {};
+
 startBtn.addEventListener("click", async () => {
 
-    const html5QrCode = new Html5Qrcode("reader");
+    statusText.innerText = "Starting camera...";
 
     try {
 
-        await html5QrCode.start(
-            { facingMode: "environment" },
+        qrScanner = new Html5Qrcode("reader");
+
+        await qrScanner.start(
+            {
+                facingMode: "environment"
+            },
             {
                 fps: 10,
-                qrbox: 250
+                qrbox: {
+                    width: 250,
+                    height: 250
+                }
             },
             (decodedText) => {
-                statusText.innerText =
-                    "Scanned: " + decodedText;
 
-                console.log(decodedText);
+                try {
+
+                    const data = JSON.parse(decodedText);
+
+                    receivedChunks[data.index] = data.data;
+
+                    statusText.innerText =
+                        `Received Chunk ${data.index} / ${data.total}`;
+
+                    console.log(
+                        `Chunk ${data.index}/${data.total} received`
+                    );
+
+                } catch {
+
+                    statusText.innerText =
+                        `Scanned: ${decodedText}`;
+
+                    console.log(decodedText);
+                }
+
+            },
+            (errorMessage) => {
+                // ignore scan failures
             }
         );
 
     } catch (err) {
 
         console.error(err);
+
         statusText.innerText =
-            "Camera Error";
+            "Camera Error: " + err;
 
     }
 
