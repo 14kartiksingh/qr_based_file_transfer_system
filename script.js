@@ -98,12 +98,23 @@ startBtn.addEventListener("click", () => {
 
         qrContainer.innerHTML = "";
 
-        new QRCode(qrContainer, {
-            text: chunkData,
-            width: qrSize,
-            height: qrSize
-        });
+        // new QRCode(qrContainer, {
+        //     text: chunkData,
+        //     width: qrSize,
+        //     height: qrSize
+        // });
 
+        const testData = JSON.stringify({
+    index: 1,
+    total: 1,
+    data: "HELLO QR BEAM"
+});
+
+new QRCode(qrContainer,{
+    text:testData,
+    width:400,
+    height:400
+});
         chunkInfo.innerText =
             `Chunk ${currentChunk + 1} / ${chunks.length}`;
 
