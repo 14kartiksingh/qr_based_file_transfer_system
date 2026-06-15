@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Beam - Sender</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Send Image</h1>
+
+    <input
+        type="file"
+        id="imageInput"
+        accept="image/png,image/jpeg,image/webp"
+    >
+
+    <br><br>
+
+    <img id="preview" style="display:none;">
+
+    <p id="info"></p>
+
+    <button id="startBtn" style="display:none;">
+        Start Transfer
+    </button>
+
+    <div id="qrcode"></div>
+
+    <p id="chunkInfo"></p>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
