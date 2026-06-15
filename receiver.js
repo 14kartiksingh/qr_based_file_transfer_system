@@ -1,46 +1,32 @@
 const statusText = document.getElementById("status");
 const startBtn = document.getElementById("startScanBtn");
 
-const receivedChunks = {};
+startBtn.addEventListener("click", async () => {
 
-startBtn.addEventListener("click", () => {
+    const html5QrCode = new Html5Qrcode("reader");
 
-    const qrScanner = new Html5Qrcode("reader");
+    try {
 
-    qrScanner.start(
-        { facingMode: "environment" },
-        {
-            fps: 10,
-            qrbox: 250
-        },
-
-        (decodedText) => {
-
-            try {
-
-                const data = JSON.parse(decodedText);
-
-                receivedChunks[data.index] = data.data;
-
+        await html5QrCode.start(
+            { facingMode: "environment" },
+            {
+                fps: 10,
+                qrbox: 250
+            },
+            (decodedText) => {
                 statusText.innerText =
-                    `Received Chunk ${data.index} / ${data.total}`;
+                    "Scanned: " + decodedText;
 
-                console.log(
-                    `Chunk ${data.index} received`
-                );
-
-            } catch (err) {
-
-                console.log("Invalid QR");
-
+                console.log(decodedText);
             }
+        );
 
-        },
+    } catch (err) {
 
-        (errorMessage) => {
-            // ignore
-        }
+        console.error(err);
+        statusText.innerText =
+            "Camera Error";
 
-    );
+    }
 
 });
